@@ -1,6 +1,16 @@
+database:
+  image: mysql
+  ports:
+    - "33066:3306"
+    - "22"
+  volumes:
+    - mysql/data:/var/lib/mysql
+    - mysql:/root
+  environment:
+    MYSQL_ROOT_PASSWORD: pass
 zookeeper:
   image: wurstmeister/zookeeper
-  ports: 
+  ports:
     - "49181:2181"
     - "22"
 nimbus:
@@ -10,21 +20,22 @@ nimbus:
     - "49772:3772"
     - "49627:6627"
     - "22"
-  links: 
+  links:
     - zookeeper:zk
 supervisor:
   image: wurstmeister/storm-supervisor
   ports:
     - "8000"
     - "22"
-  links: 
+  links:
     - nimbus:nimbus
     - zookeeper:zk
+    - database:db
 ui:
   image: wurstmeister/storm-ui
   ports:
     - "49080:8080"
     - "22"
-  links: 
+  links:
     - nimbus:nimbus
     - zookeeper:zk

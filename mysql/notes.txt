@@ -1,0 +1,35 @@
+0. cd to tools
+
+1. Create a new mysql server using:
+$ server.sh create
+
+2. Create input data files using:
+$ ./mkf.py
+$ ./mkmf.py
+
+This creates feature.csv and model_feature.csv
+
+You can change the number of items by altering "end" value in mkmf.py
+
+3. Run the sql pipeline using:
+$ ./all.sh
+
+This creates the database, required tables and loads the csv files into the database.
+
+4. Connect to the mysql server to verify:
+$ ./client.sh
+
+5. Run this sql in the mysql console:
+mysql> select count(index_) from feature where id in (select feature_id from model_feature where model_id=1 and item_id=1000);
+
+This results in:
++---------------+
+| count(index_) |
++---------------+
+|           512 |
++---------------+
+1 row in set (0.01 sec)
+
+Your database tables are now setup and populated.
+
+If you need to alter the sqls
