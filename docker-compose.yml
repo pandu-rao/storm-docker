@@ -1,10 +1,16 @@
+data:
+  image: mysql
+  volumes:
+    - /var/lib/mysql
+  entrypoint: /bin/echo
 database:
   image: mysql
   ports:
     - "33066:3306"
     - "22"
+  volumes_from:
+    - data
   volumes:
-    - mysql/data:/var/lib/mysql
     - mysql:/root
   environment:
     MYSQL_ROOT_PASSWORD: pass
